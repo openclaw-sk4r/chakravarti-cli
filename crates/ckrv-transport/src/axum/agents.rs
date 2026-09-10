@@ -103,7 +103,9 @@ async fn set_qa_agent(
 ) -> impl IntoResponse {
     let request = SetQaAgentRequest { name: body.name };
     match tokio::task::spawn_blocking(move || set_qa_agent_handler(&state, request)).await {
-        Ok(Ok(agent)) => Json(serde_json::json!({ "success": true, "agent": agent })).into_response(),
+        Ok(Ok(agent)) => {
+            Json(serde_json::json!({ "success": true, "agent": agent })).into_response()
+        }
         Ok(Err(e)) => e.into_response(),
         Err(e) => TransportError::Internal(format!("Task panicked: {e}")).into_response(),
     }
@@ -123,7 +125,9 @@ async fn set_test_writer_agent(
     let request = SetTestWriterAgentRequest { name: body.name };
     match tokio::task::spawn_blocking(move || set_test_writer_agent_handler(&state, request)).await
     {
-        Ok(Ok(agent)) => Json(serde_json::json!({ "success": true, "agent": agent })).into_response(),
+        Ok(Ok(agent)) => {
+            Json(serde_json::json!({ "success": true, "agent": agent })).into_response()
+        }
         Ok(Err(e)) => e.into_response(),
         Err(e) => TransportError::Internal(format!("Task panicked: {e}")).into_response(),
     }
